@@ -3,10 +3,7 @@ import {Link, router} from "expo-router";
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
 import {useState} from "react";
-// import {createUser} from "@/lib/appwrite";
-
-// ----------------------------------------------------------------------
-
+import {createUser} from "@/lib/appwrite";
 
 const SignUp = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +17,7 @@ const SignUp = () => {
         setIsSubmitting(true)
 
         try {
-            // await createUser({ email,  password,  name });
+            await createUser({ email,  password,  name });
 
             router.replace('/');
         } catch(error: any) {
@@ -71,4 +68,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default SignUp;
