@@ -1,5 +1,5 @@
 import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-native-appwrite";
-import {CreateUserParams, SignInParams} from "@/type";
+import {CreateUserParams, GetMenuParams, SignInParams} from "@/type";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
@@ -27,12 +27,12 @@ export const databases = new Databases(client);
 export const storage = new Storage(client);
 const avatars = new Avatars(client);
 
-export const createUser = async ({ email, password, name }: CreateUserParams) => {
+export const createUser = async ({email, password, name}: CreateUserParams) => {
     try {
         const newAccount = await account.create(ID.unique(), email, password, name)
-        if(!newAccount) throw Error;
+        if (!newAccount) throw Error;
 
-        await signIn({ email, password });
+        await signIn({email, password});
 
         const avatarUrl = avatars.getInitialsURL(name);
 
@@ -40,14 +40,14 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
             ID.unique(),
-            { email, name, accountId: newAccount.$id, avatar: avatarUrl }
+            {email, name, accountId: newAccount.$id, avatar: avatarUrl}
         );
     } catch (e) {
         throw new Error(e as string);
     }
 }
 
-export const signIn = async ({ email, password }: SignInParams) => {
+export const signIn = async ({email, password}: SignInParams) => {
     try {
         const session = await account.createEmailPasswordSession(email, password);
     } catch (e) {
@@ -58,7 +58,7 @@ export const signIn = async ({ email, password }: SignInParams) => {
 export const getCurrentUser = async () => {
     try {
         const currentAccount = await account.get();
-        if(!currentAccount) throw Error;
+        if (!currentAccount) throw Error;
 
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
@@ -66,11 +66,43 @@ export const getCurrentUser = async () => {
             [Query.equal('accountId', currentAccount.$id)]
         )
 
-        if(!currentUser) throw Error;
+        if (!currentUser) throw Error;
 
         return currentUser.documents[0];
     } catch (e) {
         console.log(e);
+        throw new Error(e as string);
+    }
+}
+
+export const getMenu = async ({category, query}: GetMenuParams) => {
+    try {
+        const queries: string[] = [];
+
+        if (category) queries.push(Query.equal('categories', category));
+        if (query) queries.push(Query.search('name', query));
+
+        const menus = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.menuCollectionId,
+            queries,
+        )
+
+        return menus.documents;
+    } catch (e) {
+        throw new Error(e as string);
+    }
+}
+
+export const getCategories = async () => {
+    try {
+        const categories = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.categoriesCollectionId,
+        )
+
+        return categories.documents;
+    } catch (e) {
         throw new Error(e as string);
     }
 }
