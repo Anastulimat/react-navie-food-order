@@ -8,10 +8,10 @@ export const appwriteConfig = {
     databaseId: '686ecd08000c9f84db76',
     // bucketId: '68643e170015edaa95d7',
     userCollectionId: '686ecd38002f9ebe8497',
-    // categoriesCollectionId: '68643a390017b239fa0f',
-    // menuCollectionId: '68643ad80027ddb96920',
-    // customizationsCollectionId: '68643c0300297e5abc95',
-    // menuCustomizationsCollectionId: '68643cd8003580ecdd8f'
+    categoriesCollectionId: '687135dc001e429cc50c',
+    menuCollectionId: '687136720021186524ef',
+    customizationsCollectionId: '6871376c0031ba92e3fc',
+    menuCustomizationsCollectionId: '6871386b0035e36348a3'
 }
 
 
