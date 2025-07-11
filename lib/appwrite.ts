@@ -6,7 +6,7 @@ export const appwriteConfig = {
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     platform: "com.anas.fastfood",
     databaseId: '686ecd08000c9f84db76',
-    // bucketId: '68643e170015edaa95d7',
+    bucketId: '68713a4a00306c3e7b96',
     userCollectionId: '686ecd38002f9ebe8497',
     categoriesCollectionId: '687135dc001e429cc50c',
     menuCollectionId: '687136720021186524ef',
